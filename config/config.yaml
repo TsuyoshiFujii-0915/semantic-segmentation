@@ -18,6 +18,7 @@ classes:
   - name: background
     color: [0, 0, 0] # Black for background
     value: 0
+    # ignore_in_metrics: true # Ignore background in metrics
   - name: object_a
     color: [255, 0, 0] # Red for object A
     value: 1

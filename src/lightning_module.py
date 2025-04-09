@@ -28,15 +28,16 @@ class SegmentationLightningModule(pl.LightningModule):
         if self.num_classes < 3:
             # Binary segmentation: model outputs 1 channel, use sigmoid activation later
             self.mode = 'binary'
+            self.num_classes = 1
             # Use BCEWithLogitsLoss or DiceLoss/JaccardLoss with mode='binary'
             self.loss_fn = smp.losses.DiceLoss(mode='binary', from_logits=True)
             
-            self.train_f1 = F1Score(task='binary', num_classes=2, threshold=0.5)
-            self.val_f1 = F1Score(task='binary', num_classes=2, threshold=0.5)
-            self.test_f1 = F1Score(task='binary', num_classes=2, threshold=0.5)
-            self.train_iou = JaccardIndex(task='binary', num_classes=2, threshold=0.5)
-            self.val_iou = JaccardIndex(task='binary', num_classes=2, threshold=0.5)
-            self.test_iou = JaccardIndex(task='binary', num_classes=2, threshold=0.5)
+            self.train_f1 = F1Score(task='binary', threshold=0.5)
+            self.val_f1 = F1Score(task='binary', threshold=0.5)
+            self.test_f1 = F1Score(task='binary', threshold=0.5)
+            self.train_iou = JaccardIndex(task='binary', threshold=0.5)
+            self.val_iou = JaccardIndex(task='binary', threshold=0.5)
+            self.test_iou = JaccardIndex(task='binary', threshold=0.5)
         
         else:
             # Multiclass segmentation: model outputs num_classes channels
@@ -77,6 +78,8 @@ class SegmentationLightningModule(pl.LightningModule):
         images, masks, filenames = batch # Assumes dataloader returns filename
         
         logits = self(images)
+        if self.mode == 'binary':
+            logits = logits.squeeze(1)
         loss = self.loss_fn(logits, masks)
         
         # Log loss
