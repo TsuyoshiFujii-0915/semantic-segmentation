@@ -1,0 +1,65 @@
+# Data settings
+data:
+  image_dir: data/images # Path to image directory
+  label_dir: data/labels # Path to label directory (mask images)
+  # Alternatively, specify separate train/val directories if pre-split
+  # train_image_dir: data/train/images
+  # train_label_dir: data/train/labels
+  # val_image_dir: data/val/images
+  # val_label_dir: data/val/labels
+  test_image_dir: data/test/images # Optional: path to test images if separate
+  test_label_dir: data/test/labels # Optional: path to test labels if available
+  label_suffix: "" # Suffix for label files (e.g., '_mask'). Empty string if names match image names.
+  train_split: 0.8 # Train/validation split ratio (if splitting from one source)
+
+# Class definitions
+# IMPORTANT: Label values in mask images should correspond to the order here (0, 1, 2, ...)
+classes:
+  - name: background
+    color: [0, 0, 0] # Black for background
+    value: 0
+  - name: object_a
+    color: [255, 0, 0] # Red for object A
+    value: 1
+  - name: object_b
+    color: [0, 0, 255] # Blue for object B
+    value: 2
+  # Add more classes as needed
+
+# DataLoader settings
+dataloader:
+  batch_size: 8
+  num_workers: 4
+
+# Training settings
+training:
+  max_epochs: 50
+  accelerator: auto # 'cpu', 'gpu', 'tpu', 'mps', 'auto' (let lightning choose)
+  devices: auto # Number of devices or 'auto'
+  precision: 32 # 16 (mixed) or 32 (float)
+  log_every_n_steps: 10 # How often to log metrics
+
+# Model settings (using segmentation-models-pytorch)
+model:
+  architecture: Unet # e.g., Unet, FPN, DeepLabV3+, PSPNet, Linknet, PAN
+  encoder_name: resnet34 # See smp documentation for available encoders
+  encoder_weights: imagenet # 'imagenet' or None
+  learning_rate: 0.0001
+  save_dir: models/ # Directory to save model
+  # in_channels: 3        # Usually 3 for RGB images
+  # activation: null      # Activation for final layer ('sigmoid', 'softmax', null) - handled in LightningModule
+
+# Augmentation settings (using Albumentations)
+augmentation:
+  height: 256
+  width: 256
+  # Add more augmentation details here if desired, e.g.,
+  # horizontal_flip_prob: 0.5
+  # vertical_flip_prob: 0.5
+  # random_brightness_contrast_prob: 0.3
+
+# Prediction settings
+predict:
+  model_checkpoint: "best" # "best" or path to specific .ckpt file in models/
+  output_dir: results/ # Directory to save prediction masks and scores
+  save_combined: true # Save Input | Label | Prediction composite image
