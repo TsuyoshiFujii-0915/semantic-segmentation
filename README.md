@@ -44,8 +44,8 @@ This repository provides a simple, configurable pipeline for semantic segmentati
 1.  **Clone the repository:**
 
     ```bash
-    git clone <repository_url>
-    cd <repository_directory>
+    git clone https://github.com/TsuyoshiFujii-0915/semantic-segmentation
+    cd semantic-segmentation
     ```
 
 2.  **Create a Python environment (recommended):**
