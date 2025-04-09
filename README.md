@@ -48,18 +48,19 @@ This repository provides a simple, configurable pipeline for semantic segmentati
     cd semantic-segmentation
     ```
 
-2.  **Create a Python environment (recommended):**
+2.  **Create a Python environment (recommended using uv):**
 
     ```bash
     uv sync
     . .venv/bin/activate
     ```
 
-3.  **Install dependencies:**
+3.  **Install dependencies (if not using uv sync):**
 
     ```bash
     uv add -r requirements.txt
     ```
+    
     _Note: Ensure you have a compatible version of PyTorch installed for your system (CPU/GPU). See [pytorch.org](https://pytorch.org/) for details._
 
 ## Dataset Preparation
